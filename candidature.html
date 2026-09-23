@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Candidature — GIDC</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            GIDC
+        </div>
+
+        <nav>
+    <a href="index.html">Accueil</a>
+    <a href="communaute.html">Le GIDC</a>
+    <a href="jeux.html">Nos jeux</a>
+    <a href="operations.html">Opérations</a>
+    <a href="evenements.html">Événements</a>
+    <a href="candidature.html">Candidature</a>
+</nav>
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             EN-TÊTE
+             ========================= -->
+
+        <section class="candidature-header">
+
+            <p class="section-small">
+                RECRUTEMENT — GIDC
+            </p>
+
+            <h1>REJOINDRE LE GIDC</h1>
+
+            <p>
+                Tu souhaites rejoindre notre communauté ?
+                Présente-toi et fais-nous découvrir ton profil.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             FORMULAIRE
+             ========================= -->
+
+        <section class="candidature-section">
+
+            <form class="candidature-form">
+
+
+                <!-- DISCORD -->
+
+                <div class="form-group">
+
+                    <label for="discord">
+                        PSEUDO DISCORD
+                    </label>
+
+                    <input
+                        type="text"
+                        id="discord"
+                        name="discord"
+                        placeholder="Exemple : joueur123"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ÂGE -->
+
+                <div class="form-group">
+
+                    <label for="age">
+                        ÂGE
+                    </label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="13"
+                        max="99"
+                        placeholder="Ton âge"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PRÉSENTATION -->
+
+                <div class="form-group">
+
+                    <label for="presentation">
+                        PRÉSENTE-TOI
+                    </label>
+
+                    <textarea
+                        id="presentation"
+                        name="presentation"
+                        rows="6"
+                        placeholder="Parle-nous brièvement de toi..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- JEUX -->
+
+                <div class="form-group">
+
+                    <label>
+                        À QUELS JEUX JOUES-TU ?
+                    </label>
+
+                    <div class="checkbox-list">
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="games"
+                                value="Ready or Not"
+                            >
+
+                            <span>Ready or Not</span>
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="games"
+                                value="Arma Reforger"
+                            >
+
+                            <span>Arma Reforger</span>
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="games"
+                                value="Hell Let Loose"
+                            >
+
+                            <span>Hell Let Loose</span>
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="games"
+                                value="Helldivers"
+                            >
+
+                            <span>Helldivers</span>
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="games"
+                                value="Minecraft"
+                            >
+
+                            <span>Minecraft</span>
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="games"
+                                value="Autre"
+                            >
+
+                            <span>Autre</span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- COMMENT CONNU -->
+
+                <div class="form-group">
+
+                    <label for="known">
+                        COMMENT AS-TU CONNU LE GIDC ?
+                    </label>
+
+                    <select id="known" name="known" required>
+
+                        <option value="">
+                            Sélectionne une réponse
+                        </option>
+
+                        <option value="ami">
+                            Un ami / une connaissance
+                        </option>
+
+                        <option value="discord">
+                            Discord
+                        </option>
+
+                        <option value="reseaux">
+                            Réseaux sociaux
+                        </option>
+
+                        <option value="jeu">
+                            Un jeu / une communauté gaming
+                        </option>
+
+                        <option value="autre">
+                            Autre
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- RÈGLEMENT -->
+
+                <div class="form-rules">
+
+                    <label class="checkbox-item">
+
+                        <input
+                            type="checkbox"
+                            name="rules"
+                            required
+                        >
+
+                        <span>
+                            Je confirme avoir pris connaissance
+                            du règlement du GIDC.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- BOUTON -->
+
+                <button
+                    type="submit"
+                    class="button candidature-button"
+                >
+                    ENVOYER MA CANDIDATURE
+                </button>
+
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>GIDC — SUCCÈS OU RIEN</p>
+
+    </footer>
+
+</body>
+
+</html>
