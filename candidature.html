@@ -25,6 +25,7 @@
     <a href="operations.html">Opérations</a>
     <a href="evenements.html">Événements</a>
     <a href="candidature.html">Candidature</a>
+    <a href="reglement.html">Règlement</a>
 </nav>
     </header>
 
@@ -295,6 +296,46 @@
 
     </footer>
 
+<script>
+const form = document.querySelector(".candidature-form");
+
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const data = {
+        discord: formData.get("discord"),
+        age: formData.get("age"),
+        presentation: formData.get("presentation"),
+        games: formData.getAll("games"),
+        known: formData.get("known")
+    };
+
+    try {
+        const response = await fetch("/api/candidature", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert("✅ Ta candidature a bien été envoyée !");
+            form.reset();
+        } else {
+            alert("❌ Une erreur est survenue.");
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("❌ Impossible d'envoyer la candidature.");
+    }
+});
+</script>
 </body>
 
 </html>
