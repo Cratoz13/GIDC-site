@@ -15,8 +15,8 @@
     <header class="navbar">
 
         <div class="logo">
-            GIDC
-        </div>
+    <img src="../images/logo-gidc.png" alt="Logo GIDC">
+</div>
 
         <nav>
             <a href="index.html">Accueil</a>
@@ -105,150 +105,253 @@
 
         </section>
 
+
+        <section
+            id="candidatures"
+            class="events-section"
+            style="display: none;"
+        >
+
+            <div class="events-intro">
+
+                <h2>
+                    CANDIDATURES REÇUES
+                </h2>
+
+                <div id="candidatures-list"></div>
+
+            </div>
+
+        </section>
+
     </main>
 
 
     <script type="module">
 
-    const form = document.getElementById("staff-login-form");
-    const message = document.getElementById("login-message");
+        const SUPABASE_URL =
+            "https://uvyicxdvjoqntjtcrzzg.supabase.co";
 
-    const SUPABASE_URL = "https://uvyicxdvjoqntjtcrzzg.supabase.co";
-    const SUPABASE_ANON_KEY = "TA_CLE_SUPAsb_publishable_4T9TDzY8A_1WRKAojXdXSA_0aoFvXWlBASE";
+        const SUPABASE_ANON_KEY =
+            "sb_publishable_4T9TDzY8A_1WRKAojXdXSA_0aoFvXWl";
 
-    form.addEventListener("submit", async (event) => {
 
-        event.preventDefault();
+        const form =
+            document.getElementById("staff-login-form");
 
-        message.textContent = "Connexion en cours...";
+        const message =
+            document.getElementById("login-message");
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+        const candidaturesSection =
+            document.getElementById("candidatures");
 
-        try {
+        const candidaturesList =
+            document.getElementById("candidatures-list");
 
-            const response = await fetch(
-                `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "apikey": SUPABASE_ANON_KEY
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
+
+        form.addEventListener("submit", async (event) => {
+
+            event.preventDefault();
+
+            message.textContent =
+                "Connexion en cours...";
+
+
+            const email =
+                document.getElementById("email").value;
+
+            const password =
+                document.getElementById("password").value;
+
+
+            try {
+
+                const response = await fetch(
+                    `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "apikey": SUPABASE_ANON_KEY
+                        },
+
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    }
+                );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error_description ||
+                        "Connexion refusée"
+                    );
+
                 }
-            );
 
-            const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error("Connexion refusée");
+                localStorage.setItem(
+                    "gidc_access_token",
+                    data.access_token
+                );
+
+
+                message.textContent =
+                    "Connexion réussie.";
+
+
+                await afficherCandidatures(
+                    data.access_token
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "❌ Email ou mot de passe incorrect.";
+
             }
 
-            localStorage.setItem("gidc_access_token", data.access_token);
-
-            message.textContent = "Connexion réussie.";
-
-            await afficherCandidatures(data.access_token);
-
-        } catch (error) {
-
-            console.error(error);
-            message.textContent = "❌ Email ou mot de passe incorrect.";
-
-        }
-
-    });
+        });
 
 
-    async function afficherCandidatures(accessToken) {
+        async function afficherCandidatures(accessToken) {
 
-        const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/candidatures?select=*&order=created_at.desc`,
-            {
-                headers: {
-                    "apikey": SUPABASE_ANON_KEY,
-                    "Authorization": `Bearer ${accessToken}`
+            try {
+
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/candidatures?select=*&order=created_at.desc`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "apikey": SUPABASE_ANON_KEY,
+                            "Authorization":
+                                `Bearer ${accessToken}`
+                        }
+                    }
+                );
+
+
+                if (!response.ok) {
+
+                    const erreur =
+                        await response.text();
+
+                    console.error(erreur);
+
+                    throw new Error(
+                        "Impossible de récupérer les candidatures."
+                    );
+
                 }
-            }
-        );
 
-        if (!response.ok) {
-            throw new Error("Impossible de récupérer les candidatures");
-        }
 
-        const candidatures = await response.json();
+                const candidatures =
+                    await response.json();
 
-        let zone = document.getElementById("candidatures");
 
-        if (!zone) {
+                candidaturesSection.style.display =
+                    "block";
 
-            zone = document.createElement("section");
-            zone.id = "candidatures";
-            zone.className = "events-section";
 
-            document.querySelector("main").appendChild(zone);
+                if (candidatures.length === 0) {
 
-        }
+                    candidaturesList.innerHTML = `
+                        <div class="event-card">
 
-        if (candidatures.length === 0) {
+                            <h3>
+                                AUCUNE CANDIDATURE
+                            </h3>
 
-            zone.innerHTML = `
-                <div class="events-intro">
-                    <h2>AUCUNE CANDIDATURE</h2>
-                    <p>Aucune candidature reçue pour le moment.</p>
-                </div>
-            `;
+                            <p>
+                                Aucune candidature reçue pour le moment.
+                            </p>
 
-            return;
-        }
+                        </div>
+                    `;
 
-        zone.innerHTML = `
-            <div class="events-intro">
-                <h2>CANDIDATURES REÇUES</h2>
+                    return;
 
-                ${candidatures.map(candidature => `
+                }
+
+
+                candidaturesList.innerHTML =
+                    candidatures.map((candidature) => `
+
+                        <div class="event-card">
+
+                            <h3>
+                                ${candidature.discord || "Pseudo inconnu"}
+                            </h3>
+
+                            <p>
+                                <strong>Âge :</strong>
+                                ${candidature.age || "Non renseigné"}
+                            </p>
+
+                            <p>
+                                <strong>Jeux :</strong>
+                                ${candidature.games || "Non renseigné"}
+                            </p>
+
+                            <p>
+                                <strong>Comment il a connu le GIDC :</strong>
+                                ${candidature.known || "Non renseigné"}
+                            </p>
+
+                            <p>
+                                <strong>Présentation :</strong><br>
+                                ${candidature.presentation || "Non renseignée"}
+                            </p>
+
+                            <p>
+                                <strong>Statut :</strong>
+                                ${candidature.status || "En attente"}
+                            </p>
+
+                        </div>
+
+                    `).join("");
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                candidaturesSection.style.display =
+                    "block";
+
+                candidaturesList.innerHTML = `
                     <div class="event-card">
 
-                        <h3>${candidature.discord || "Pseudo inconnu"}</h3>
+                        <h3>
+                            ERREUR
+                        </h3>
 
                         <p>
-                            <strong>Âge :</strong>
-                            ${candidature.age || "Non renseigné"}
-                        </p>
-
-                        <p>
-                            <strong>Jeux :</strong>
-                            ${candidature.games || "Non renseigné"}
-                        </p>
-
-                        <p>
-                            <strong>Comment il nous a connu :</strong>
-                            ${candidature.known || "Non renseigné"}
-                        </p>
-
-                        <p>
-                            <strong>Présentation :</strong><br>
-                            ${candidature.presentation || "Non renseignée"}
-                        </p>
-
-                        <p>
-                            <strong>Statut :</strong>
-                            ${candidature.status || "En attente"}
+                            Connexion réussie, mais impossible
+                            de charger les candidatures.
                         </p>
 
                     </div>
-                `).join("")}
+                `;
 
-            </div>
-        `;
+            }
 
-    }
+        }
 
-</script>
+    </script>
 
 </body>
 
